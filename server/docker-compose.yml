@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  postgres-dev:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_DB: birdnest_dev
+      POSTGRES_USER: api
+      POSTGRES_PASSWORD: password
+    ports:
+      - 4329:5432
+  postgres-test:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_DB: birdnest_test
+      POSTGRES_USER: api
+      POSTGRES_PASSWORD: password
+    ports:
+      - 4328:5432

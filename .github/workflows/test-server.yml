@@ -1,0 +1,53 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - server/**
+  pull_request:
+    types:
+      - opened
+      - synchronize
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        working-directory: server
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_DB: birdnest_test
+          POSTGRES_USER: api
+          POSTGRES_PASSWORD: password
+        ports:
+          - 4328:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm run test
+        env:
+          TEST_PORT: '3001'
+          TEST_DATABASE_URL: 'postgres://api:password@localhost:4328/birdnest_test'
+          TEST_CORS_ORIGIN: ''
