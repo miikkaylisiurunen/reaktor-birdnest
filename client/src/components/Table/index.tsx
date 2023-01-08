@@ -1,12 +1,14 @@
 import { DroneWithPilot } from '../../types';
 
 type Props = {
-  drones: DroneWithPilot[];
+  drones: DroneWithPilot[] | null;
 };
 
 const Table = ({ drones }: Props) => {
-  if (drones.length === 0) {
+  if (!drones) {
     return <span>Loading...</span>;
+  } else if (drones.length === 0) {
+    return <span>No pilots have violated the NDZ in the last 10 minutes</span>;
   }
 
   return (

@@ -7,7 +7,7 @@ import { DroneWithPilot } from './types';
 const socket = io(process.env.REACT_APP_SERVER_URL ?? '');
 
 const App = () => {
-  const [drones, setDrones] = useState<DroneWithPilot[]>([]);
+  const [drones, setDrones] = useState<DroneWithPilot[] | null>(null);
   const [isError, setIsError] = useState<boolean>(false);
 
   useEffect(() => {
